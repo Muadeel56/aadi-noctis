@@ -1,3 +1,4 @@
+import { ThemeSwitcher } from "@/components/layout/theme-switcher";
 import { SITE } from "@/lib/constants";
 
 /** Stub — full navigation lands in the Layout & Routes phase. */
@@ -8,9 +9,7 @@ export function Navbar() {
         <span className="font-display text-lg font-semibold tracking-wide">
           {SITE.name.toLowerCase()}
         </span>
-        <span className="font-mono text-xs text-muted-foreground">
-          noctis · v0
-        </span>
+        <ThemeSwitcher />
       </nav>
     </header>
   );

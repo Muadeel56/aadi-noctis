@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "@/components/theme-provider";
 import {
   clashDisplay,
   jetbrainsMono,
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · Aadi",
   },
   description:
-    "Portfolio of Aadi (Muhammad Adeel) — frontend engineer crafting dark, elegant interfaces with React, Next.js, and Tailwind.",
+    "Portfolio of Aadi (Muhammad Adeel) — full-stack engineer building dark, elegant products with React, Next.js, Vue, Django, and Cloudflare.",
 };
 
 export default function RootLayout({
@@ -24,10 +25,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      data-theme="noctis"
+      suppressHydrationWarning
       className={`dark ${satoshi.variable} ${clashDisplay.variable} ${jetbrainsMono.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <ThemeProvider>{children}</ThemeProvider>
+      </body>
     </html>
   );
 }

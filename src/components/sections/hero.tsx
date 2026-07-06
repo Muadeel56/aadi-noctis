@@ -1,8 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/motion/fade-in";
-import { SITE, URDU_COUPLET } from "@/lib/constants";
-
-const STACK = ["React 19", "Next.js", "Tailwind v4", "TypeScript"];
+import { HERO_STACK, SITE, URDU_COUPLET } from "@/lib/constants";
 
 export function Hero() {
   return (
@@ -38,7 +36,7 @@ export function Hero() {
       </FadeIn>
 
       <FadeIn delay={0.6} className="mt-10 flex flex-wrap justify-center gap-2">
-        {STACK.map((item) => (
+        {HERO_STACK.map((item) => (
           <Badge key={item} variant="secondary" className="font-mono text-xs">
             {item}
           </Badge>
