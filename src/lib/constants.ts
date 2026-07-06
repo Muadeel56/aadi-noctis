@@ -8,41 +8,6 @@ export const SITE = {
   github: "https://github.com/Muadeel56",
 } as const;
 
-/**
- * Full skill inventory, grouped for the About/Skills phase.
- * The hero shows only HERO_STACK — keep that list short and punchy.
- */
-export const SKILLS = {
-  frontend: [
-    "React",
-    "Next.js",
-    "Vue",
-    "Nuxt",
-    "JavaScript",
-    "TypeScript",
-    "Tailwind CSS",
-    "shadcn/ui",
-    "Material UI",
-  ],
-  backend: [
-    "Python",
-    "Django",
-    "Django REST Framework",
-    "JWT Auth",
-    "Prisma",
-    "Drizzle",
-  ],
-  data: ["PostgreSQL", "SQLite", "Supabase", "Cloudflare D1", "Cloudflare R2"],
-  platform: [
-    "Cloudflare Pages",
-    "Cloudflare Workers",
-    "Docker",
-    "GitHub",
-    "Gitea",
-  ],
-  tooling: ["Claude Code", "Cursor", "UX Pilot"],
-} as const;
-
 /** Short list of badges under the hero copy. */
 export const HERO_STACK = [
   "React",

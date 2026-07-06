@@ -28,7 +28,9 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`dark ${satoshi.variable} ${clashDisplay.variable} ${jetbrainsMono.variable} ${notoNastaliqUrdu.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      {/* suppressHydrationWarning: browser extensions inject attributes into
+          <body> before hydration (e.g. bis_register), which React 19 flags. */}
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
