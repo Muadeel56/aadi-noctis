@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Check } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Popover } from "radix-ui";
@@ -29,7 +29,7 @@ export function ThemeSwitcher() {
           type="button"
           aria-label={`Theme: ${active.label}. Change theme`}
           className={cn(
-            "group flex size-8 items-center justify-center rounded-full",
+            "group flex size-10 items-center justify-center rounded-full",
             "outline-none transition-colors hover:bg-muted",
             "focus-visible:ring-2 focus-visible:ring-ring/60"
           )}
@@ -53,7 +53,7 @@ export function ThemeSwitcher() {
             {THEMES.map((t, i) => {
               const isActive = mounted && t.id === theme;
               return (
-                <motion.button
+                <m.button
                   key={t.id}
                   type="button"
                   initial={{ opacity: 0, scale: 0.5 }}
@@ -77,7 +77,7 @@ export function ThemeSwitcher() {
                   {isActive && (
                     <Check className="size-3.5 text-background" strokeWidth={3} />
                   )}
-                </motion.button>
+                </m.button>
               );
             })}
           </div>

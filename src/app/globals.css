@@ -191,12 +191,255 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Full-bleed fixed overlays (grain, glow) must never create H-scroll. */
+    overflow-x: clip;
   }
   html {
     @apply font-sans;
+    /* Firefox scrollbar — tinted to the active theme's accent. */
+    scrollbar-color: color-mix(in oklch, var(--accent) 40%, var(--surface))
+      var(--background);
   }
   .font-urdu {
     line-height: 2.2;
     direction: rtl;
+  }
+}
+
+/* Custom scrollbar (WebKit/Blink) — follows the active theme. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklch, var(--accent) 40%, var(--surface));
+  border-radius: 8px;
+  border: 2px solid var(--background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/*
+ * Film grain — a barely-there animated noise layer that keeps large
+ * dark surfaces from feeling flat. Pure CSS, zero JS.
+ */
+.grain {
+  position: fixed;
+  inset: -100%;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  animation: grain-shift 9s steps(10) infinite;
+}
+
+@keyframes grain-shift {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-4%, -6%); }
+  20% { transform: translate(-10%, 4%); }
+  30% { transform: translate(6%, -8%); }
+  40% { transform: translate(-4%, 10%); }
+  50% { transform: translate(-10%, 2%); }
+  60% { transform: translate(10%, 0); }
+  70% { transform: translate(0, 8%); }
+  80% { transform: translate(-8%, 8%); }
+  90% { transform: translate(8%, 4%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    animation: none;
+  }
+}
+
+/*
+ * Underline-sweep hover for inline/nav links — the line grows from
+ * the left on hover/focus and stays put on the active page link.
+ */
+.link-sweep {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 calc(100% - 0.1em);
+  background-size: 0% 1px;
+  transition: background-size 0.3s ease, color 0.2s ease;
+}
+
+.link-sweep:hover,
+.link-sweep:focus-visible,
+.link-sweep[aria-current="page"],
+a:hover > .link-sweep,
+a:focus-visible > .link-sweep,
+a[aria-current="page"] > .link-sweep {
+  background-size: 100% 1px;
+}
+
+/*
+ * CSS entrance animations for above-the-fold content. Unlike JS-driven
+ * motion these run before hydration, so the hero paints immediately
+ * (keeps LCP honest on slow connections).
+ */
+/* Entrances start at 0.01 opacity, not 0 — Chrome counts the element as
+   painted immediately, so the entrance animation doesn't push back LCP. */
+@keyframes fade-up {
+  from {
+    opacity: 0.01;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.7s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+
+@keyframes word-rise {
+  from {
+    opacity: 0.01;
+    transform: translateY(60%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-word-rise {
+  animation: word-rise 0.8s cubic-bezier(0.21, 0.47, 0.32, 0.98) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up,
+  .animate-word-rise {
+    animation: none;
+  }
+}
+
+/* Hero gradient mesh — three blobs drifting on slow offset loops. */
+@keyframes mesh-drift-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(12vw, 8vh) scale(1.15);
+  }
+}
+
+@keyframes mesh-drift-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate(-10vw, -6vh) scale(0.95);
+  }
+}
+
+@keyframes mesh-drift-3 {
+  0%,
+  100% {
+    transform: translate(-50%, 0) scale(1);
+  }
+  50% {
+    transform: translate(-30%, -10vh) scale(1.2);
+  }
+}
+
+.mesh-blob {
+  animation-duration: 28s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.mesh-blob:nth-child(2) {
+  animation-duration: 34s;
+}
+
+.mesh-blob:nth-child(3) {
+  animation-duration: 40s;
+}
+
+/* Tech Arsenal marquee — duplicated track slides its own width. */
+@keyframes marquee {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 12%,
+    black 88%,
+    transparent
+  );
+}
+
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.75rem;
+  padding-right: 0.75rem;
+  min-width: 100%;
+  justify-content: space-around;
+  animation: marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+.marquee-reverse .marquee-track {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Global fallback for CSS animations/transitions the JS layer can't see. */
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .link-sweep {
+    transition: none;
+  }
+
+  .mesh-blob,
+  .marquee-track {
+    animation: none;
+  }
+
+  /* Static wrap: drop the duplicate copy and let tags flow. */
+  .marquee {
+    mask-image: none;
+  }
+
+  .marquee-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 0;
+  }
+
+  .marquee-track[aria-hidden="true"] {
+    display: none;
   }
 }

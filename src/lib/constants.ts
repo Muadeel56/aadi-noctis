@@ -6,7 +6,22 @@ export const SITE = {
     "Full-stack engineer building dark, elegant products end to end — React and Vue up front, Django and Postgres behind, shipped on Cloudflare.",
   url: "https://aadi-noctis.pages.dev",
   github: "https://github.com/Muadeel56",
+  email: "muadeel59@gmail.com",
 } as const;
+
+/** Live-status lines for the home page "Currently" block. */
+export const CURRENTLY = [
+  {
+    label: "Building",
+    value: "MapForge",
+    detail: "a map-first side project — tiles, PostGIS, and late nights",
+  },
+  {
+    label: "Working",
+    value: "QTO House",
+    detail: "full-stack, from Django APIs to React frontends",
+  },
+] as const;
 
 /** Short list of badges under the hero copy. */
 export const HERO_STACK = [
@@ -35,4 +50,18 @@ export type ThemeId = (typeof THEMES)[number]["id"];
 export const URDU_COUPLET = {
   text: "ستاروں سے آگے جہاں اور بھی ہیں",
   translation: "Beyond the stars, there are yet more worlds.",
+} as const;
+
+/**
+ * The full couplet — the hero shows the first line; the About page
+ * completes it. Translation is my own.
+ */
+export const URDU_COUPLET_FULL = {
+  lines: [
+    "ستاروں سے آگے جہاں اور بھی ہیں",
+    "ابھی عشق کے امتحاں اور بھی ہیں",
+  ],
+  translation:
+    "Beyond the stars, there are yet more worlds — and love has yet more trials in store.",
+  poet: "Allama Iqbal",
 } as const;
